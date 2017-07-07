@@ -9,10 +9,12 @@ interface ICart
      *
      * @param int $productID
      * @param int|float $qty
+     * @param int|float $price
      * @param array $options
+     * @param IDiscount[] $discounts
      * @return CartItem
      */
-    public function add($productID, $qty, array $options = []);
+    public function add($productID, $qty, $price, array $options = [], array $discounts = []);
 
     /**
      * Update the product quantity.
@@ -37,4 +39,11 @@ interface ICart
      * @return void
      */
     public function clear();
+
+    /**
+     * Calculate the total amount.
+     *
+     * @return int|float
+     */
+    public function total();
 }

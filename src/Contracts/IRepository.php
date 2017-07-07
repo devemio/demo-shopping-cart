@@ -15,6 +15,11 @@ interface IRepository
     public function get($id);
 
     /**
+     * @return ICartItem[]
+     */
+    public function all();
+
+    /**
      * @param ICartItem $item
      * @return ICartItem
      */

@@ -27,6 +27,16 @@ class RedisRepository implements IRepository
         return $item === false ? null : $item;
     }
 
+    public function all()
+    {
+        $items = [];
+        $keys = $this->client->keys($this->getKey(null));
+        foreach ($keys as $key) {
+            $items[] = unserialize($this->client->get($key));
+        }
+        return $items;
+    }
+
     public function save(ICartItem $item)
     {
         $key = $this->getKey($item->getHashedID());

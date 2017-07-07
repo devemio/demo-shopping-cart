@@ -21,10 +21,10 @@ class Cart implements ICart
         }
     }
 
-    public function add($productID, $qty, array $options = [])
+    public function add($productID, $qty, $price, array $options = [], array $discounts = [])
     {
         $this->validateQty($qty);
-        $item = new CartItem($productID, $qty, $options);
+        $item = new CartItem($productID, $qty, $price, $options, $discounts);
         if ($existingItem = $this->repository->get($item->getHashedID())) {
             $item->setQty($existingItem->getQty());
         }
@@ -52,5 +52,14 @@ class Cart implements ICart
     public function clear()
     {
         $this->repository->delete();
+    }
+
+    public function total()
+    {
+        $total = 0;
+        foreach ($this->repository->all() as $item) {
+            $total += $item->getTotalPrice() * $item->getQty();
+        }
+        return $total;
     }
 }

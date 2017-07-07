@@ -23,6 +23,11 @@ class MySQLRepository implements IRepository
         // TODO: Implement get() method.
     }
 
+    public function all()
+    {
+        // TODO: Implement all() method.
+    }
+
     public function save(ICartItem $item)
     {
         return $item;

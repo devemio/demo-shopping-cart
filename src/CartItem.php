@@ -1,18 +1,27 @@
 <?php namespace Isswp101\ShoppingCart;
 
 use Isswp101\ShoppingCart\Contracts\ICartItem;
+use Isswp101\ShoppingCart\Contracts\IDiscount;
 
 class CartItem implements ICartItem
 {
     private $productID;
     private $qty = 0;
+    private $price = 0;
     private $options = [];
 
-    public function __construct($productID, $qty, array $options)
+    /**
+     * @var IDiscount[]
+     */
+    private $discounts = [];
+
+    public function __construct($productID, $qty, $price, array $options, array $discounts)
     {
         $this->productID = $productID;
         $this->qty = $qty;
+        $this->price = $price;
         $this->options = $options;
+        $this->discounts = $discounts;
     }
 
     public function getHashedID()
@@ -39,5 +48,14 @@ class CartItem implements ICartItem
     public function getOptions()
     {
         return $this->options;
+    }
+
+    public function getTotalPrice()
+    {
+        $price = $this->price;
+        foreach ($this->discounts as $discount) {
+            $price = $discount->calculate($price);
+        }
+        return $price;
     }
 }

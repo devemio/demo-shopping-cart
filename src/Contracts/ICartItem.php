@@ -7,4 +7,6 @@ interface ICartItem
     public function setQty($qty);
 
     public function getQty();
+
+    public function getTotalPrice();
 }
