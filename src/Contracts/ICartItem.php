@@ -5,4 +5,6 @@ interface ICartItem
     public function getHashedID();
 
     public function setQty($qty);
+
+    public function getQty();
 }

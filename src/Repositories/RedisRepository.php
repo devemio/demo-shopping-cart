@@ -3,33 +3,48 @@
 use Isswp101\ShoppingCart\Contracts\ICartItem;
 use Isswp101\ShoppingCart\Contracts\IRepository;
 use Isswp101\ShoppingCart\Contracts\IUser;
+use Predis\Client;
 
 class RedisRepository implements IRepository
 {
     private $user;
+    private $client;
 
-    public function __construct(IUser $user)
+    public function __construct(IUser $user, Client $client)
     {
         $this->user = $user;
+        $this->client = $client;
     }
 
     public function has($id)
     {
-        // TODO: Implement has() method.
+        return $this->get($id) != null;
     }
 
     public function get($id)
     {
-        // TODO: Implement get() method.
+        $item = unserialize($this->client->get($this->getKey($id)));
+        return $item === false ? null : $item;
     }
 
     public function save(ICartItem $item)
     {
+        $key = $this->getKey($item->getHashedID());
+        $this->client->set($key, serialize($item));
         return $item;
     }
 
     public function delete($id = null)
     {
-        // TODO: Implement delete() method.
+        $key = $this->getKey($id);
+        $keys = $this->client->keys($key);
+        if ($keys) {
+            $this->client->del($keys);
+        }
+    }
+
+    protected function getKey($id)
+    {
+        return 'cart:' . $this->user->getID() . ':' . ($id == null ? '*' : $id);
     }
 }

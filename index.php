@@ -10,4 +10,9 @@ init(app());
 /** @var ICart $cart */
 $cart = app(ICart::class);
 
-dd($cart->add(1, 10));
+$cart->add(1, 10, ['size' => 'xs']);
+$cart->add(1, 20, ['size' => 'xs']);
+$item = $cart->add(1, 10);
+$item = $cart->update($item->getHashedID(), -5);
+// $cart->clear();
+dd($item->getQty());

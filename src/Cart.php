@@ -25,8 +25,8 @@ class Cart implements ICart
     {
         $this->validateQty($qty);
         $item = new CartItem($productID, $qty, $options);
-        if ($this->repository->has($item)) {
-            $item->setQty($qty);
+        if ($existingItem = $this->repository->get($item->getHashedID())) {
+            $item->setQty($existingItem->getQty());
         }
         $this->repository->save($item);
         return $item;
