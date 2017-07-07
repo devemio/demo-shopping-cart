@@ -2,7 +2,8 @@
     "name": "isswp101/shopping-cart",
     "type": "library",
     "require": {
-        "php": "~5.6|~7.0"
+        "php": "~7.0",
+        "laravel/laravel": "^5.4"
     },
     "autoload": {
         "psr-4": {
